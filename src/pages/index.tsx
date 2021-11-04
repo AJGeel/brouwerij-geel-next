@@ -1,10 +1,10 @@
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 import { Meta } from '../layout/Meta';
 import { Main } from '../templates/Main';
 
 const Index = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <Main
@@ -16,7 +16,12 @@ const Index = () => {
       }
     >
       <h1 className="font-bold text-2xl">Index page title</h1>
-      <p className="text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, commodi alias dolorem quis quod neque soluta vitae architecto impedit iusto blanditiis numquam magni quasi dolores, voluptates distinctio dignissimos veritatis veniam!</p>
+      <p className="text-base">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, 
+        commodi alias dolorem quis quod neque soluta vitae architecto impedit 
+        iusto blanditiis numquam magni quasi dolores, voluptates distinctio 
+        dignissimos veritatis veniam!
+      </p>
     </Main>
   );
 };
