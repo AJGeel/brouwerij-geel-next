@@ -17,10 +17,7 @@ const Index = () => {
     >
       <h1 className="font-bold text-2xl">Index page title</h1>
       <p className="text-base">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, 
-        commodi alias dolorem quis quod neque soluta vitae architecto impedit 
-        iusto blanditiis numquam magni quasi dolores, voluptates distinctio 
-        dignissimos veritatis veniam!
+        Bruh
       </p>
     </Main>
   );

@@ -1,6 +1,4 @@
-# Boilerplate and Starter for Next JS 12+, Tailwind CSS 2.0 and TypeScript
-
-🚀 Boilerplate and Starter for Next.js, Tailwind CSS and TypeScript ⚡️ Made with developer experience first: Next.js, TypeScript, ESLint, Prettier, Husky, Lint-Staged, VSCode, Netlify, PostCSS, Tailwind CSS.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2019595c-d006-4692-9d8b-061206a9b292/deploy-status)](https://app.netlify.com/sites/brouwerij-geel-next/deploys)
 
 ### Getting started
 
@@ -8,7 +6,7 @@
 npm run dev
 ```
 
-Open http://localhost:3000 with your favorite browser to see your project.
+Open http://localhost:3000
 
 ```
 .
