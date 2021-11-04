@@ -16,9 +16,7 @@ const Index = () => {
       }
     >
       <h1 className="font-bold text-2xl">Index page title</h1>
-      <p className="text-base">
-        Bruh
-      </p>
+      <p className="text-base">Bruh</p>
     </Main>
   );
 };
