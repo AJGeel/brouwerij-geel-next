@@ -1,6 +1,10 @@
+import { brewingLog } from "@/data/brewingLog";
+
 const Home = () => (
-  <div className="flex items-center justify-center h-screen">
-    <p>Hello world</p>
+  <div className="flex flex-col items-center justify-center p-4">
+    {brewingLog.map((item) => (
+      <div key={item.number}>{JSON.stringify(item)}</div>
+    ))}
   </div>
 );
 
