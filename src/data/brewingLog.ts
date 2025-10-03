@@ -1,6 +1,6 @@
 import { Clarity } from "@/constants/clarity";
 
-type LogEntry = {
+export type FullRecord = {
   number: number;
   name: string;
   style: string;
@@ -15,12 +15,14 @@ type LogEntry = {
   bottleDate: Date;
 };
 
-type WorkInProgress = Pick<
-  LogEntry,
+export type PartialRecord = Pick<
+  FullRecord,
   "number" | "name" | "style" | "volume" | "og" | "brewDate"
 >;
 
-export const brewingLog: (LogEntry | WorkInProgress)[] = [
+export type BrewingRecord = FullRecord | PartialRecord;
+
+export const brewingLog: BrewingRecord[] = [
   {
     number: 1,
     name: "Toffee Apple Cider",
