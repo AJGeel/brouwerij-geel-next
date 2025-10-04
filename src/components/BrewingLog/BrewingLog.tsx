@@ -13,19 +13,43 @@ import {
 import { useState } from "react";
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { formatDate } from "@/utils/formatDate";
 import { srmColors } from "@/data/srmColors";
 import { getContrastTextColor } from "@/utils/getContrastTextColor";
 
-const renderSrmCell = (info: CellContext<BrewingRecord, unknown>) => {
-  const value = info.getValue<number>();
+type CellInfo = CellContext<BrewingRecord, unknown>;
 
-  if (!value) {
-    return "-";
-  }
+const EmptyCell = () => <span className="text-gray-400">-</span>;
+
+const renderDateCell = (info: CellInfo) => {
+  const value = info.getValue<string>();
+  if (!value) return <EmptyCell />;
+
+  const date = new Date(value as string).toLocaleDateString("nl-NL");
+
+  return date;
+};
+
+const renderNameCell = (info: CellInfo) => {
+  const value = info.getValue<string>();
+  if (!value) return <EmptyCell />;
+
+  return <span className="font-semibold">{value}</span>;
+};
+
+const renderMonospaceNumber = (info: CellInfo, decimals = 3) => {
+  const value = info.getValue<number>();
+  if (!value) return <EmptyCell />;
+
+  return (
+    <span className="tabular-nums">{Number(value).toFixed(decimals)}</span>
+  );
+};
+
+const renderSrmCell = (info: CellInfo) => {
+  const value = info.getValue<number>();
+  if (!value) return <EmptyCell />;
 
   const color = srmColors[value];
-
   const textColor = getContrastTextColor(color);
 
   return (
@@ -44,23 +68,20 @@ const renderSrmCell = (info: CellContext<BrewingRecord, unknown>) => {
 const renderDefaultColumn: Partial<ColumnDef<BrewingRecord>> = {
   cell: (info) => {
     const value = info.getValue();
-
-    if (value == null || value == "") {
-      return "-";
-    }
+    if (!value) return <EmptyCell />;
 
     return String(value);
   },
 };
 
 const columns: ColumnDef<BrewingRecord>[] = [
-  { accessorKey: "number", header: "#" },
-  { accessorKey: "name", header: "Name" },
+  { accessorKey: "number", header: "" },
+  { accessorKey: "name", header: "Name", cell: renderNameCell },
   { accessorKey: "style", header: "Style" },
-  { accessorKey: "volume", header: "Volume (L)" },
-  { accessorKey: "og", header: "OG" },
-  { accessorKey: "fg", header: "FG" },
-  { accessorKey: "abv", header: "ABV (%)" },
+  { accessorKey: "volume", header: "Volume" },
+  { accessorKey: "og", header: "OG", cell: renderMonospaceNumber },
+  { accessorKey: "fg", header: "FG", cell: renderMonospaceNumber },
+  { accessorKey: "abv", header: "ABV" },
   { accessorKey: "ibu", header: "IBU" },
   {
     accessorKey: "srm",
@@ -74,12 +95,12 @@ const columns: ColumnDef<BrewingRecord>[] = [
   {
     accessorKey: "brewDate",
     header: "Brew Date",
-    cell: (info) => formatDate(info.getValue()),
+    cell: renderDateCell,
   },
   {
     accessorKey: "bottleDate",
     header: "Bottle Date",
-    cell: (info) => formatDate(info.getValue()),
+    cell: renderDateCell,
   },
 ];
 
@@ -108,25 +129,26 @@ const BrewingLog = () => {
                 return (
                   <th
                     key={header.id}
-                    className="px-4 py-3 border-b border-gray-200 cursor-pointer select-none"
+                    className="px-4 py-3 border-b border-gray-200 cursor-pointer select-none group"
                     onClick={header.column.getToggleSortingHandler()}
                   >
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                      {isSorted === "asc" && (
-                        <ArrowUp size={14} className="text-gray-600" />
-                      )}
-                      {isSorted === "desc" && (
-                        <ArrowDown size={14} className="text-gray-600" />
-                      )}
-                      {!isSorted && (
-                        <ArrowUpDown size={14} className="text-gray-400" />
-                      )}
+                      <div
+                        className={cn(
+                          "p-1 rounded duration-250 outline outline-black/0 text-gray-400 bg-white group-hover:outline-black/10 group-hover:shadow-md",
+                          isSorted && "outline-black/10 shadow-md text-black"
+                        )}
+                      >
+                        {isSorted === "asc" && <ArrowUp size={14} />}
+                        {isSorted === "desc" && <ArrowDown size={14} />}
+                        {!isSorted && <ArrowUpDown size={14} />}
+                      </div>
                     </div>
                   </th>
                 );
