@@ -11,15 +11,8 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
-
-const formatDate = (value: unknown) => {
-  if (!value) return "-";
-  try {
-    return new Date(value as string).toLocaleDateString();
-  } catch {
-    return "-";
-  }
-};
+import { cn } from "@/utils/cn";
+import { formatDate } from "@/utils/formatDate";
 
 const columns: ColumnDef<BrewingRecord>[] = [
   { accessorKey: "number", header: "#" },
@@ -34,7 +27,6 @@ const columns: ColumnDef<BrewingRecord>[] = [
   {
     accessorKey: "clarity",
     header: "Clarity",
-    cell: (info) => String(info.getValue() ?? "-"),
   },
   {
     accessorKey: "brewDate",
@@ -48,6 +40,18 @@ const columns: ColumnDef<BrewingRecord>[] = [
   },
 ];
 
+const defaultColumn: Partial<ColumnDef<BrewingRecord>> = {
+  cell: (info) => {
+    const value = info.getValue();
+
+    if (value == null || value == "") {
+      return "-";
+    }
+
+    return String(value);
+  },
+};
+
 export default function Home() {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -58,17 +62,19 @@ export default function Home() {
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    defaultColumn,
   });
 
   return (
-    <div className="flex flex-col items-center justify-center p-6">
-      <div className="overflow-x-auto w-full max-w-6xl shadow-xl rounded-xl border border-gray-200">
+    <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
+      <div className="overflow-x-auto w-full max-w-6xl rounded-xl border border-gray-200 shadow-lg">
         <table className="w-full text-sm text-left border-collapse">
-          <thead className="text-gray-800 uppercase text-xs font-semibold">
+          <thead className="text-gray-800 uppercase text-xs font-semibold bg-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   const isSorted = header.column.getIsSorted();
+
                   return (
                     <th
                       key={header.id}
@@ -99,12 +105,12 @@ export default function Home() {
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row, rowIndex) => (
+            {table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className={`${
-                  rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50"
-                } hover:bg-amber-100 transition-colors`}
+                className={cn(
+                  "bg-white hover:bg-gray-100 transition-colors duration-250"
+                )}
               >
                 {row.getVisibleCells().map((cell) => (
                   <td
